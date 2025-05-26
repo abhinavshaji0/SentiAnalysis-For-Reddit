@@ -1,4 +1,4 @@
 # config.py
-CLIENT_ID = "zRg-aM9DiNfWggAYIB8O7Q"
-CLIENT_SECRET = "9cQcO-cmBLUHiQ-i5pexQxXiq-EsGg"
-USER_AGENT = "Sentiment Analysis by /u/anime_and_aviyal"
+CLIENT_ID="your_client_id"
+CLIENT_SECRET="your_client_secret"
+USER_AGENT="SentimentApp by /u/your_reddit_username"
