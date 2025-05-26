@@ -1,0 +1,295 @@
+/* Base styles and variables */
+:root {
+  --primary: #ff4500; /* Reddit orange */
+  --primary-light: #ff7d4d;
+  --secondary: #0079d3; /* Reddit blue */
+  --text: #1a1a1b;
+  --text-light: #7c7c7c;
+  --background: #f8f9fa;
+  --card-bg: #ffffff;
+  --border: #edeff1;
+  --positive: #46a758;
+  --negative: #e5484d;
+  --neutral: #8e8ea0;
+  --shadow: rgba(0, 0, 0, 0.05);
+  --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--background);
+  color: var(--text);
+  line-height: 1.6;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Typography */
+h1 {
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+h2 {
+  color: var(--secondary);
+  margin: 1.5rem 0 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Form styling */
+form {
+  background-color: var(--card-bg);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--shadow);
+  margin-bottom: 2rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.1);
+}
+
+input[type="text"]::placeholder {
+  color: var(--text-light);
+}
+
+button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: var(--primary-light);
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.3);
+}
+
+/* Help text */
+.help-text {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+.help-text a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.help-text a:hover {
+  text-decoration: underline;
+}
+
+/* Error message */
+p.error {
+  background-color: rgba(229, 72, 77, 0.1);
+  color: var(--negative);
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+p.error a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+p.error a:hover {
+  text-decoration: underline;
+}
+
+/* Loading spinner */
+.loading {
+  display: none;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.loading.active {
+  display: block;
+}
+
+.loading::after {
+  content: "";
+  border: 4px solid var(--primary-light);
+  border-top: 4px solid var(--primary);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Results container */
+.results {
+  display: block;
+}
+
+/* Post preview styling */
+.post-preview {
+  background-color: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--shadow);
+  border-left: 4px solid var(--primary);
+  margin-bottom: 1.5rem;
+}
+
+.post-preview p {
+  margin-bottom: 0.75rem;
+}
+
+.post-preview p:last-child {
+  margin-bottom: 0;
+}
+
+.post-preview p strong {
+  font-size: 1.2rem;
+  color: var(--text);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* Sentiment styling */
+.sentiment-positive {
+  background-color: rgba(70, 167, 88, 0.1);
+  color: var(--positive);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.sentiment-negative {
+  background-color: rgba(229, 72, 77, 0.1);
+  color: var(--negative);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.sentiment-neutral {
+  background-color: rgba(142, 142, 160, 0.1);
+  color: var(--neutral);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+/* Comment list styling */
+.results ul {
+  list-style: none;
+  padding: 0;
+}
+
+.results li {
+  background-color: var(--card-bg);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.results li p {
+  margin-bottom: 0.5rem;
+}
+
+.results li p:last-child {
+  margin-bottom: 0;
+}
+
+/* Chart styling */
+canvas#sentimentChart {
+  max-width: 400px;
+  margin: 1rem auto;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  form,
+  .post-preview,
+  .results li,
+  canvas#sentimentChart {
+    padding: 1.5rem;
+  }
+
+  canvas#sentimentChart {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  form,
+  .post-preview,
+  .results li,
+  canvas#sentimentChart {
+    padding: 1rem;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .help-text {
+    font-size: 0.85rem;
+  }
+}

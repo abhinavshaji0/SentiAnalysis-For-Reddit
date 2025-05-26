@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit Sentiment Analysis</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Sentiment Analysis of Reddit Posts</h1>
+    <form method="POST" action="/" id="analysis-form" aria-label="Reddit post URL submission form">
+        <label for="post_url">Enter Reddit Post URL:</label>
+        <input type="text" id="post_url" name="post_url" placeholder="https://www.reddit.com/r/subreddit/comments/abc123/" required aria-describedby="url-help">
+        <p id="url-help" class="help-text">Use a public Reddit post URL (e.g., <a href="https://www.reddit.com/r/wholesome/comments/1ksxp8i/" target="_blank">this post</a>). <a href="https://www.reddit.com/r/help/wiki/faq" target="_blank">How to find a URL</a>.</p>
+        <button type="submit">Analyze</button>
+    </form>
+    
+    <div class="loading" id="loading" aria-live="polite" aria-hidden="true"></div>
+    
+    {% if error %}
+        <p class="error" role="alert">{{ error }} Try a public Reddit post URL (e.g., <a href="https://www.reddit.com/r/wholesome/comments/1ksxp8i/" target="_blank">this post</a>).</p>
+    {% endif %}
+    
+    {% if post %}
+        <div class="results" role="region" aria-label="Analysis results">
+            <h2>Post Preview</h2>
+            <div class="post-preview">
+                <p><strong>{{ post.title }}</strong></p>
+                <p>By u/{{ post.author }} - {{ post.created_at | datetimeformat }}</p>
+                <p>{{ post.text }}</p>
+            </div>
+            <h2 class="sentiment-{{ sentiment | lower }}">Sentiment: {{ sentiment }}{% if sentiment_score %} (Score: {{ sentiment_score | round(2) }}){% endif %}</h2>
+            {% if comment_sentiments %}
+                <h2>Top Comments Sentiment</h2>
+                <ul>
+                    {% for comment, sentiment in post.comments|zip(comment_sentiments) %}
+                        <li>
+                            <p>{{ comment }}</p>
+                            <p class="sentiment-{{ sentiment | lower }}">Sentiment: {{ sentiment }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if chart_data %}
+                <h2>Sentiment Distribution</h2>
+                <canvas id="sentimentChart" aria-label="Bar chart of sentiment distribution"></canvas>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+                <script>
+                    const ctx = document.getElementById('sentimentChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: {{ chart_data.labels | tojson }},
+                            datasets: [{
+                                label: 'Sentiment Counts',
+                                data: {{ chart_data.data | tojson }},
+                                backgroundColor: ['#46a758', '#e5484d', '#8e8ea0'],
+                                borderColor: ['#3b8c4a', '#c43f44', '#7a7a8c'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: { beginAtZero: true, title: { display: true, text: 'Count' } }
+                            },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: { enabled: true }
+                            }
+                        }
+                    });
+                </script>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <script>
+        document.getElementById('analysis-form').addEventListener('submit', function(event) {
+            const url = document.getElementById('post_url').value;
+            const urlPattern = /^https?:\/\/(www\.)?reddit\.com\/r\/[\w-]+\/comments\/[\w]+\/?/;
+            if (!urlPattern.test(url)) {
+                event.preventDefault();
+                alert('Please enter a valid Reddit post URL (e.g., https://www.reddit.com/r/subreddit/comments/abc123/)');
+            } else {
+                document.getElementById('loading').setAttribute('aria-hidden', 'false');
+            }
+        });
+    </script>
+</body>
+</html>
